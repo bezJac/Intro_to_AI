@@ -1,3 +1,4 @@
+import copy
 import random
 VIC=10**20 #The value of a winning board (for max)
 LOSS=-VIC #The value of a losing board (for max)
