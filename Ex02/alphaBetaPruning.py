@@ -1,6 +1,6 @@
-import game
+from Ex02 import game
 import copy
-DEPTH=10
+DEPTH=8
 def go(s):
     if game.isHumTurn(s):
         return abmin(s,DEPTH,float("-inf"),float("inf"))[1]
@@ -14,9 +14,9 @@ def go(s):
 #        if s is a terminal state ns=0.
 def abmax(s,d,a,b):
     if d==0 or game.isFinished(s):
-        return [game.value(s),0]
+        return [game.value(s), 0]
     v=float("-inf")
-    ns=game.getNext(s)
+    ns= game.getNext(s)
     bestMove=0
     for i in ns:
         tmp=abmin(copy.deepcopy(i),d-1,a,b)
@@ -36,7 +36,7 @@ def abmax(s,d,a,b):
 #        if s is a terminal state ns=0.
 def abmin(s,d,a,b):
     if d==0 or game.isFinished(s):
-        return [game.value(s),0]
+        return [game.value(s), 0]
     v=float("inf")
     ns = game.getNext(s)
     bestMove=0

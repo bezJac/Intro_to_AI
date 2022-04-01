@@ -1,7 +1,7 @@
 import alphaBetaPruning
-import game
+from Ex02 import game
 
-board=game.create()
+board= game.create()
 game.whoIsFirst(board)
 while not game.isFinished(board):
     if game.isHumTurn(board):
