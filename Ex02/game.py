@@ -11,13 +11,15 @@ SELECTED='x'
 
 def create():
     board=[]
-    for i in range(8):
+    '''for i in range(SIZE):
         rand= lambda :random.randrange(-6,16)
-        board=board+[[rand() for j in range(8)]]
-    r=random.randrange(0,8)
-    c=random.randrange(0,8)
+        board=board+[[rand() for j in range(SIZE)]]
+    r=random.randrange(0,SIZE)
+    c=random.randrange(0,SIZE)
     board[r][c]='x'
-    return [board,0.00001,HUMAN,63,[r,c],[0,0]]
+    '''
+    board=[[1,5,-5],['x',-5,9],[12,8,12]]
+    return [board,0.00001,HUMAN,SIZE*SIZE-1,[1,0],0,0]
 
 
 def whoIsFirst(s):
@@ -38,8 +40,24 @@ def value(s):
 
 def isFinished(s):
 #Returns True if the game ended
-    return s[3] == 0
+    return s[3] == 0 or isEmpty(s)
 
+
+def isEmpty(s):
+    if isHumTurn(s):
+        r = s[4][0]
+        c = s[4][1]
+        for i in range(SIZE):
+            if s[0][r][i] != 'x' and i!=c :
+                return False
+        return True
+    else:
+        r = s[4][0]
+        c = s[4][1]
+        for i in range(SIZE):
+            if s[0][i][c] != 'x' and i != r:
+                return False
+        return True
 
 def printState(s):
     for r in range(len(s[0])):
@@ -52,13 +70,13 @@ def printState(s):
             else:
                 print(s[0][r][c]," |",end="")
     print("\n -- -- -- -- -- -- -- -- -- -- -- -- --\n")
-    print("your score: ",s[5][0])
-    print("computer's score: ", s[5][1])
+    print("your score: ",s[5])
+    print("computer's score: ", s[6])
 
-    if s[3]==0:
-        if s[5][1]>s[5][0]:
+    if isFinished(s):
+        if s[6]>s[5]:
             print("Ha ha ha I won!")
-        elif s[5][1]<s[5][0] :
+        elif s[6]<s[5] :
             print("You did it!")
         else:
             print("It's a TIE")
@@ -71,7 +89,7 @@ def inputMove(s):
     while flag:
         move = int(input("Enter number of places to move: "))
         temp=s[4][1]+move
-        if temp<0 or temp> 7 or s[0][s[4][0]][temp]=='x':
+        if temp<0 or temp> SIZE or s[0][s[4][0]][temp]=='x':
             print("Ilegal move.")
         else:
             flag=False
@@ -83,26 +101,10 @@ def makeMove(s,r,c):
     s[3] -=1
 
     if isHumTurn(s):
-        s[5][0] += s[0][r][c]
-        lst=[]
-        for i in range(8):
-            if s[0][i][c]!='x' and i!=r:
-                lst.append(s[0][r][c]-s[0][i][c])
-        if  lst!= []:
-             s[1]=min(lst)
-        else:
-            s[1]= s[0][r][c]
+        s[5] += s[0][r][c]
     else:
-        s[5][1] += s[0][r][c]
-
-        lst = []
-        for i in range(8):
-            if s[0][r][i] != 'x' and i != c:
-                lst.append(s[0][r][c] - s[0][r][i])
-        if  lst != []:
-            s[1] = min(lst)
-        else:
-            s[1]=s[0][r][c]
+        s[6] += s[0][r][c]
+    s[1] = s[6] - s[5]
 
     s[2] = not s[2]
     s[0][r][c] = 'x'
