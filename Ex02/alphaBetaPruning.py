@@ -1,6 +1,6 @@
 from Ex02 import game
 import copy
-DEPTH=5
+DEPTH=7
 def go(s):
     if game.isHumTurn(s):
         return abmin(s,DEPTH,float("-inf"),float("inf"))[1]

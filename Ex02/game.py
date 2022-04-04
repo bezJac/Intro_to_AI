@@ -3,23 +3,25 @@ import random
 VIC=10**20 #The value of a winning board (for max)
 LOSS=-VIC #The value of a losing board (for max)
 TIE=0 #The value of a tie
-SIZE=3 #The length of a winning sequence
+SIZE=8 #The length of a winning sequence
 COMPUTER=True #Marks the computer's cells on the board
 HUMAN=False #Marks the human's cells on the board
-SELECTED='x'
+
 
 
 def create():
     board=[]
-    '''for i in range(SIZE):
+    for i in range(SIZE):
         rand= lambda :random.randrange(-6,16)
         board=board+[[rand() for j in range(SIZE)]]
     r=random.randrange(0,SIZE)
     c=random.randrange(0,SIZE)
     board[r][c]='x'
+
     '''
     board=[[1,5,-5],['x',-5,9],[12,8,12]]
-    return [board,0.00001,HUMAN,SIZE*SIZE-1,[1,0],0,0]
+    '''
+    return [board,0.00001,HUMAN,SIZE*SIZE-1,[r,c],0,0]
 
 
 def whoIsFirst(s):
@@ -60,16 +62,20 @@ def isEmpty(s):
         return True
 
 def printState(s):
+    ln = "-------"
+    ln =ln * (SIZE)
     for r in range(len(s[0])):
-        print("\n -- -- -- -- -- -- -- -- -- -- -- --\n|", end="")
+        print("\n",ln,"\n|", end="")
         for c in range(len(s[0][0])):
             if s[0][r][c]=='x'and not (r==s[4][0] and c==s[4][1]):
-                print("   |" ,end="")
+                print("      |" ,end="")
             elif r==s[4][0] and c==s[4][1]:
                 print (' $**$ |',end="")
+            elif len(str(s[0][r][c])) ==1:
+                print("  ",s[0][r][c]," |",end="")
             else:
-                print(s[0][r][c]," |",end="")
-    print("\n -- -- -- -- -- -- -- -- -- -- -- -- --\n")
+                print(" ", s[0][r][c], " |", end="")
+    print("\n",ln,"\n")
     print("your score: ",s[5])
     print("computer's score: ", s[6])
 
