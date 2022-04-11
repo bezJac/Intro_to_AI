@@ -96,13 +96,16 @@ def inputMove(s):
     printState(s)  # print current state
     flag = True
     while flag:
-        move = int(input("Enter number of places to move: "))
-        temp = s[4][1] + move  # calculate index of column user wants to move to on same row
-        if temp < 0 or temp > SIZE or s[0][s[4][0]][temp] == 'x':  # check if index is beyond boundaries of board or cell has already been picked
-            print("Ilegal move.")  # move is illegal get input again from user
-        else:  # move is legal
-            flag = False  # set flag end input loop
-            makeMove(s, s[4][0], temp)  # move marker to requested cell
+        move = int(input("Enter number of columns to move, positive number for right, negative for left: "))
+        if move == 0:
+            print("zero is an invalid input")
+        else:
+            temp = s[4][1] + move  # calculate index of column user wants to move to on same row
+            if temp < 0 or temp >= SIZE or s[0][s[4][0]][temp] == 'x':  # check if index is beyond boundaries of board or cell has already been picked
+                print("Ilegal move.")  # move is illegal get input again from user
+            else:  # move is legal
+                flag = False  # set flag end input loop
+                makeMove(s, s[4][0], temp)  # move marker to requested cell
 
 '''
 היורסטיקה הנבחרת היא: סכום הנקודות שצבר המחשב פחות סכום הנקודות שצבר השחקן.
