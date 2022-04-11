@@ -1,17 +1,9 @@
 import copy
 import random
 
-VIC = 10 ** 20  # The value of a winning board (for max)
-LOSS = -VIC  # The value of a losing board (for max)
-TIE = 0  # The value of a tie
 SIZE = 8  # size of rows and columns in board
 COMPUTER = True  # Marks the computer's turn to play
 HUMAN = False  # Marks the human's turn to play
-
-'''
-   board=[[1,5,-5],['x',-5,9],[12,8,12]]
-'''
-
 
 def create():
     # initialize a game with a new board
@@ -23,9 +15,10 @@ def create():
     r = random.randrange(0, SIZE)  # pick random row index for game starting cell
     c = random.randrange(0, SIZE)  # pick random column index for game starting cell
     board[r][c] = 'x'  # mark game starting cell's value as deleted
+
     # each state holds : [game board , heuristic value of state , turn , number of cells left in board to pick,
     # currently picked cell indexes in a list , total point accumulated by user , total points accumulated by computer]
-    return [board, 0.00001, HUMAN, SIZE * SIZE - 1, [r, c], 0, 0]  # initialize first state
+    return [board, 0.00001, HUMAN, SIZE * SIZE - 1, [r,c], 0, 0]  # initialize first state
 
 
 def whoIsFirst(s):
@@ -105,12 +98,18 @@ def inputMove(s):
     while flag:
         move = int(input("Enter number of places to move: "))
         temp = s[4][1] + move  # calculate index of column user wants to move to on same row
-        if temp < 0 or temp > SIZE or s[0][s[4][0]][
-            temp] == 'x':  # check if index is beyond boundaries of board or cell has already been picked
+        if temp < 0 or temp > SIZE or s[0][s[4][0]][temp] == 'x':  # check if index is beyond boundaries of board or cell has already been picked
             print("Ilegal move.")  # move is illegal get input again from user
         else:  # move is legal
             flag = False  # set flag end input loop
             makeMove(s, s[4][0], temp)  # move marker to requested cell
+
+'''
+היורסטיקה הנבחרת היא: סכום הנקודות שצבר המחשב פחות סכום הנקודות שצבר השחקן.
+ההיגיון הוא: שיש ענין שיהיה ערך מספרי כלשהו עבור כל מצב, 
+כלומר כאשר אין מוטיבציה לחשב צעדים קדימה אלא לתת ערך למצב הלוח ברגע זה. 
+כשנשתמש ביוריסטיקה שנבחרה הערך הגבוה ביותר יחשב לנו את הבחירה המוצלחת ביותר עבור המחשב, ולהפך עבור השחקן
+'''
 
 
 def makeMove(s, r, c):
@@ -136,6 +135,7 @@ def getNext(s):
                 tmp = copy.deepcopy(s) # copy the state
                 makeMove(tmp, s[4][0], i) # send copy to make move function to execute the move
                 ns += [tmp] # add the move ( state ) to the next state list
+        ns.sort(key=value) # sort move by heuristic value in ascending order (human is min)
 
     else: # if current turn is computer's:
         for i in range(len(s[0])): # for all available cells in current picked cell column:
@@ -144,6 +144,6 @@ def getNext(s):
                 makeMove(tmp, i, s[4][1])# send copy to make move function to execute the move
                 ns += [tmp] # add the move ( state ) to the next state list
 
-    ns.sort(key=value, reverse=True) # sort move by heuristic value in descending order
+        ns.sort(key=value, reverse=True) # sort move by heuristic value in descending order (computer is max)
 
     return ns
