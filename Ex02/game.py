@@ -1,7 +1,6 @@
 '''Menachem Heller 305567943'''
 '''Bezalel Jacober 312033236'''
 
-
 import copy
 import random
 
