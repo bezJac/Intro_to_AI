@@ -8,15 +8,37 @@ import math
 #d - The domains are a list of lists - the domain of every var.
 #
 #The state is a list of 2 lists: the vars. and the domains.
+
 N=0
-def create(fpath="sudoku.txt"):
+def create(fpath="sudoku1.txt"):
     global N
     board=read_board_from_file(fpath)
     N=int(len(board)**0.25)
-
- # your code here
-    
+    # your code here
+    dom=[]
+    for i in range(len(board)):
+        if board[i] !=0:
+            dom.append([board[i]])
+        else:
+            temp=list(range(1,10))
+            for j in list_of_vars(board,i):
+                if board[j] in temp:
+                    temp.remove(board[j])
+            dom.append(temp)
+    p=[board,dom]
     return p      
+
+
+def list_of_vars(board, v):
+#Returns a list of free vars. whose domain will be
+#influenced by assigning a val. to v
+    r=list(range(N**4))
+    r.remove(v)
+    l=[]
+    for i in r:
+        if board[i]!=0 and not is_consistent(board,v,i,1,1):
+            l+=[i]
+    return l
 
 def read_board_from_file(fpath):
     f=open(fpath, "r")
@@ -65,6 +87,20 @@ def is_solved(problem):
     return True
     
 def is_consistent(problem, v1, v2, x1, x2):
+    if x1!=x2:
+        return True
+    col1=v1 % (N**2)
+    col2=v2 % (N**2)
+    if col1==col2:
+        return False
+    row1=v1//(N**2)
+    row2=v2//(N**2)
+    if row1==row2:
+        return False
+    if row1-(row1%N)==row2-(row2%N)and col1-(col1%N)==col2-(col2%N):
+        return False
+    return True
+
 #Returns True iff v1=x1 and v2=x2 is consistent with all constraints
      # your code here
 
