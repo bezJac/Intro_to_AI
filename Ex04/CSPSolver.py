@@ -3,8 +3,10 @@ import copy
 
 
 def solve(n):
-    p = backtrack(CSProblem.create())
-    CSProblem.present(p)
+    x = CSProblem.create()
+    CSProblem.present(x)
+    p = backtrack(x)
+    CSProblem.present(p,True)
 
 
 def backtrack(p):
