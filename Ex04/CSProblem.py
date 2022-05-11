@@ -1,3 +1,7 @@
+# Menachem Heller 305567943
+# Bezalel Jacober  312033236
+
+
 # SUDOKU
 import math
 
@@ -138,7 +142,7 @@ def is_consistent(problem, v1, v2, x1, x2):
     if row1 - (row1 % N) == row2 - (row2 % N) and col1 - (col1 % N) == col2 - (col2 % N):
         return False
 
-    # vars are not in same row, column or block - no constraints are violated by assignment - return True
+    # vars are not in same row, column, or block - no constraints are violated by assignment - return True
     return True
 
 
@@ -157,7 +161,7 @@ def list_of_influenced_vars(problem, v):
     return l
 
 
-def present(problem,solved = False):
+def present(problem, solved=False):
     print()
     if solved:
         print("SOLVED:")
