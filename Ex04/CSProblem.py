@@ -44,14 +44,37 @@ def create(fpath='sudoku.txt'):
 def list_of_constraining_vars(board, v):
     # Returns a list of non-free vars. whose value will influence
     # the domain of v
-    r = list(range(N ** 4))  # get size of board
-    r.remove(v)  # remove v from board
-    l = []
-    for i in r:  # loop through board , add to the list all non-free vars that will be influenced by v since their value
-        # in return influence v's domain
-        if board[i] != 0 and not is_consistent(board, v, i, 1, 1):
-            l += [i]
-    return l  #
+    rowLength = N*N
+    r = []
+    row = v // (rowLength)  # row index of v in board
+    col = v % (rowLength)  # column index of v in board
+
+    # add to list indexes of all non-free vars in v's row
+    # reduce from v's index its column index to reach index in board
+    # which is the beginning of v's row ,add i indexes N*N times to reach full row
+    for i in range(rowLength):
+        if i != col and board[v - col + i] != 0:  # avoid v's index and free vars
+            r.append(v - col + i)
+
+    # add to list indexes of all non-free vars in v's column
+    # reduce from v's index its row index*N*N to reach the same column in the first row
+    # add i*9 indexes each iteration to reach the same column in following row
+    for i in range(rowLength):
+        if i != row and board[v - (row * rowLength) + (rowLength * i)] != 0:  # avoid v's index and free vars
+            r.append(v - (row *rowLength) + (rowLength * i))
+
+    # add to list indexes of all non-free vars in v's block (of N*N)
+    # finds the index which is the first index of v's block
+    # iterates on the three rows in the block (adding N*N indexes each iteration)
+    # on each row iteration, iterates N times on the columns of the block on that row
+    beginCol = col - (col % N)  # get beginning cell's column index
+    beginRow = row - (row % N)  # get beginning cell's row index
+    beginIndex = beginRow * 9 + beginCol  # get the actual index of the cell in the board
+    for i in range(0, rowLength * N, rowLength):  # iterate on block's rows
+        for j in range(N):  # for each row iteration , iterate on block's columns
+            if beginIndex + i + j != v and board[beginIndex + i + j] != 0:  # avoid v's index and free vars
+                r.append(beginIndex + i + j)
+    return list(set(r))  # return list with all the value appearing once only
 
 
 def read_board_from_file(fpath):
