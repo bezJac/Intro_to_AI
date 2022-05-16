@@ -17,7 +17,7 @@ import math
 N = 0
 
 
-def create(fpath="sudoku.txt"):
+def create(fpath='sudoku.txt'):
     global N
     board = read_board_from_file(fpath)  # get the current board
     N = int(len(board) ** 0.25)
@@ -31,7 +31,7 @@ def create(fpath="sudoku.txt"):
 
         # var is currently unassigned with a value
         else:
-            temp = list(range(1, 10))  # create domain with all default values
+            temp = list(range(1, (N*N)+1))  # create domain with all default values
             for j in list_of_constraining_vars(board, i):  # get all vars influencing current var
                 if board[j] in temp:  # remove from the domain the values of the influencing vars
                     temp.remove(board[j])
