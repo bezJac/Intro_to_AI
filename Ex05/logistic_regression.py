@@ -4,11 +4,10 @@ import math
 Computes the dot product of the vectors x and y (lists of numbers).
 Assumes that x and y have the same length.
 '''
-
+ds = []
 def readDS(filename):
     global ds
     file=open(filename,"r")
-    ds=[]
     s=file.readline()
     while s!="":
         s=s.split()
@@ -25,7 +24,7 @@ def save_model(filename, t):
     str1=""
     for val in t:
         str1=str(val)+' '
-    file.write(str1)
+        file.write(str1)
     file.close()
 
 def dot_prod(x ,y):
