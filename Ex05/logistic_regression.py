@@ -27,6 +27,16 @@ def save_model(filename, t):
         file.write(str1)
     file.close()
 
+def read_model(filename):
+    file= open(filename,'r')
+    res =[]
+    s = file.readline()
+    s = s.split()
+    for val in s:
+        res.append(float(val))
+    file.close()
+    return res
+
 def dot_prod(x ,y):
     return sum([x[i]*y[i] for i in range(len(x))])
 
@@ -47,6 +57,8 @@ def function(t):
     return -sum([ds[i][-1]*math.log(sigmoid(t,[1] + ds[i][:-1])) + \
                  (1-ds[i][-1])*math.log(1-sigmoid(t,[1] + ds[i][:-1]))\
                       for i in range(len(ds))]) / len(ds)
+
+
 
 def derivative(j ,t):
     global ds
