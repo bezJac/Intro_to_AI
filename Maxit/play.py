@@ -1,5 +1,5 @@
 import alphaBetaPruning
-from Ex02 import game
+from Maxit import game
 
 board= game.create()
 game.whoIsFirst(board)

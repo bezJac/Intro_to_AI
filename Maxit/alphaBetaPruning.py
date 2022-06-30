@@ -1,4 +1,4 @@
-from Ex02 import game
+from Maxit import game
 import copy
 DEPTH=7
 def go(s):
